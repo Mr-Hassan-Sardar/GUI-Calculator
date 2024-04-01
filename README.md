@@ -3,7 +3,7 @@
 Welcome to my GUI Calculator with MySQL Integration repository! 🎉
 
 **Overview:**
-This repository hosts a sleek GUI calculator application built using C# and Windows Forms. It provides all the essential arithmetic operations such as addition, subtraction, multiplication, and division. But wait, there's more! My calculator also supports square and square root calculations, making it a handy tool for a variety of mathematical tasks. 🚀
+- This repository hosts a sleek GUI calculator application built using C# and Windows Forms. It provides all the essential arithmetic operations such as addition, subtraction, multiplication, and division. But wait, there's more! My calculator also supports square and square root calculations, making it a handy tool for a variety of mathematical tasks. 🚀
 
  **Features:**
 - User-friendly interface with easy-to-use buttons for effortless calculations. 💻
