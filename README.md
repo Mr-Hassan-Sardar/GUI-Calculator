@@ -15,7 +15,7 @@ Demonstrates the power of GUI-to-database integration for seamless data handling
 Simply download or clone the repository to your local machine.
 Set up your MySQL database and configure the connection string in the code.
 I have provided a .sql file.
-Just import that file then your database will be setup.
+Just import that file and in Form1.cs change the password to your respective password then your database will be setup.
 Open the solution in Visual Studio or your preferred IDE.
 Build and run the application.
 Start crunching numbers and witness the magic! ✨
