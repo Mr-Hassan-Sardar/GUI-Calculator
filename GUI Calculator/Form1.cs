@@ -24,7 +24,7 @@ namespace GUI_Calculator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Error")
+            if (textBox1.Text == "Error" || textBox1.Text.StartsWith("val1="))
             {
                 textBox1.Text = "";
                 textBox1.Text = textBox1.Text + "1";
@@ -37,7 +37,7 @@ namespace GUI_Calculator
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Error")
+            if (textBox1.Text == "Error" || textBox1.Text.StartsWith("val1="))
             {
                 textBox1.Text = "";
                 textBox1.Text = textBox1.Text + "2";
@@ -50,7 +50,7 @@ namespace GUI_Calculator
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Error")
+            if (textBox1.Text == "Error" || textBox1.Text.StartsWith("val1="))
             {
                 textBox1.Text = "";
                 textBox1.Text = textBox1.Text + "3";
@@ -63,7 +63,7 @@ namespace GUI_Calculator
 
         private void button8_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Error")
+            if (textBox1.Text == "Error" || textBox1.Text.StartsWith("val1="))
             {
                 textBox1.Text = "";
                 textBox1.Text = textBox1.Text + "4";
@@ -76,7 +76,7 @@ namespace GUI_Calculator
 
         private void button7_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Error")
+            if (textBox1.Text == "Error" || textBox1.Text.StartsWith("val1="))
             {
                 textBox1.Text = "";
                 textBox1.Text = textBox1.Text + "5";
@@ -89,7 +89,7 @@ namespace GUI_Calculator
 
         private void button6_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Error")
+            if (textBox1.Text == "Error" || textBox1.Text.StartsWith("val1="))
             {
                 textBox1.Text = "";
                 textBox1.Text = textBox1.Text + "6";
@@ -102,7 +102,7 @@ namespace GUI_Calculator
 
         private void button12_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Error")
+            if (textBox1.Text == "Error" || textBox1.Text.StartsWith("val1="))
             {
                 textBox1.Text = "";
                 textBox1.Text = textBox1.Text + "7";
@@ -115,7 +115,7 @@ namespace GUI_Calculator
 
         private void button11_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Error")
+            if (textBox1.Text == "Error" || textBox1.Text.StartsWith("val1="))
             {
                 textBox1.Text = "";
                 textBox1.Text = textBox1.Text + "8";
@@ -128,7 +128,7 @@ namespace GUI_Calculator
 
         private void button10_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Error")
+            if (textBox1.Text == "Error" || textBox1.Text.StartsWith("val1="))
             {
                 textBox1.Text = "";
                 textBox1.Text = textBox1.Text + "9";
@@ -141,7 +141,7 @@ namespace GUI_Calculator
 
         private void button15_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Error")
+            if (textBox1.Text == "Error" || textBox1.Text.StartsWith("val1="))
             {
                 textBox1.Text = "";
                 textBox1.Text = textBox1.Text + "0";
@@ -203,7 +203,7 @@ namespace GUI_Calculator
             button14_Click(sender, e);
         }
 
-       
+
 
         private void button14_Click(object sender, EventArgs e)
         {
@@ -230,7 +230,7 @@ namespace GUI_Calculator
                 }
                 result = value1 / value2;
             }
-           
+
 
             string tableName = "";
             if (sign == '+')
@@ -253,7 +253,7 @@ namespace GUI_Calculator
             {
                 tableName = "SquareRoot_table";
             }
-            else if(sign =='q') //'q' for square
+            else if (sign == 'q') //'q' for square
             {
                 tableName = "Square_table";
             }
@@ -266,7 +266,7 @@ namespace GUI_Calculator
                 {
                     command.CommandText = $"INSERT INTO {tableName} (Operand, Result) VALUES ({value1}, {result})";
                 }
-                else if(sign=='q')
+                else if (sign == 'q')
                 {
                     command.CommandText = $"INSERT INTO {tableName} (Operand, Result) VALUES ({value1}, {result})";
                 }
@@ -275,6 +275,47 @@ namespace GUI_Calculator
                     command.CommandText = $"INSERT INTO {tableName} (Operand1, Operand2, Result) VALUES ({value1}, {value2}, {result})";
                 }
                 command.ExecuteNonQuery();
+
+                if (sign == 's')
+                {
+                    command.CommandText = $"SELECT Operand, Result FROM {tableName} ORDER BY id DESC LIMIT 1";
+                }
+                else if (sign == 'q')
+                {
+                    command.CommandText = $"SELECT Operand, Result FROM {tableName} ORDER BY id DESC LIMIT 1";
+                }
+                else
+                {
+                    command.CommandText = $"SELECT Operand1, Operand2, Result FROM {tableName} ORDER BY id DESC LIMIT 1";
+                }
+                MySqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    if (sign == 's')
+                    {
+                        double operand = reader.GetDouble(0);
+                        double resultFromDB = reader.GetDouble(1);
+
+                        textBox1.Text = $"val1={operand}, result={resultFromDB}";
+                    }
+                    else if (sign == 'q')
+                    {
+                        double operand = reader.GetDouble(0);
+                        double resultFromDB = reader.GetDouble(1);
+
+                        textBox1.Text = $"val1={operand}, result={resultFromDB}";
+                    }
+                    else
+                    {
+                        double operand1 = reader.GetDouble(0);
+                        double operand2 = reader.GetDouble(1);
+                        double resultFromDB = reader.GetDouble(2);
+
+                        textBox1.Text = $"val1={operand1}, val2={operand2}, result={resultFromDB}";
+                    }
+                }
+                reader.Close();
             }
             catch (Exception ex)
             {
@@ -285,8 +326,7 @@ namespace GUI_Calculator
                 if (connection.State == System.Data.ConnectionState.Open)
                     connection.Close();
             }
-
-            textBox1.Text = result.ToString();
         }
+
     }
 }
